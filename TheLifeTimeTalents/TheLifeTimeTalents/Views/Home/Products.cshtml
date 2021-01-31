@@ -1,0 +1,30 @@
+﻿<div id="container">
+    <h1>We Have The Following Plans:</h1>
+    <div id="planContainer">
+        <p>Free Plan</p>
+        <p>Paid Plan</p>
+        </div>
+    <p>You are now on <span id="planName">Free</span> plan</p>
+    <button id="managePlanBtn">Manage Your Subscription</button>
+    </div>
+@section scripts{ 
+    <style>
+        </style>
+<script>
+    $('#managePlanBtn').on('click', function () {
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Stripe/CustomerPortal",
+            timeout: 10000,
+        }).done(function (data) {
+
+            window.location = data;
+        }).fail(function (data) {
+            
+        });
+
+    });
+    </script>
+}
