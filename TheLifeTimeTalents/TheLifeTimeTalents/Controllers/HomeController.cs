@@ -23,7 +23,7 @@ namespace TheLifeTimeTalents.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Products()
         {
             return View();
         }
@@ -33,5 +33,7 @@ namespace TheLifeTimeTalents.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }
