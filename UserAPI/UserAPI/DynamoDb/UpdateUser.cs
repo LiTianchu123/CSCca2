@@ -20,25 +20,25 @@ namespace UserAPI.DynamoDb
             _dynamoDbClient = dynamoDbClient;
         }
 
-        public async Task<User> Update(int id, string subscription)
+        public async Task<User> Update(string customerId, string subscription)
         {
-            var response = await _getUser.GetUsers(id);
+            var response = await _getUser.GetUsers(customerId);
 
             var currentSubscription = response.Users.Select(p => p.Subscription).FirstOrDefault();
            
 
-            var request = RequestBuilder(id, subscription, currentSubscription);
+            var request = RequestBuilder(customerId, subscription, currentSubscription);
 
             var result = await UpdateItemAsync(request);
 
             return new User
             {
-                Id = Convert.ToInt32(result.Attributes["id"].N),
+                Id = result.Attributes["id"].S,
                 Subscription = result.Attributes["subscription"].S,
             };
         }
 
-        private UpdateItemRequest RequestBuilder(int id, string subscription, string currentSubscription)
+        private UpdateItemRequest RequestBuilder(string customerId, string subscription, string currentSubscription)
         {
             var request = new UpdateItemRequest
             {
@@ -47,7 +47,7 @@ namespace UserAPI.DynamoDb
                     {
                         "id", new AttributeValue
                         {
-                            N = id.ToString()
+                            S = customerId
                         }
                     }
                   

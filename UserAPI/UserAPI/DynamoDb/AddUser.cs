@@ -17,19 +17,18 @@ namespace UserAPI.DynamoDb
 		    _dynamoClient = dynamoClient;
 	    }
 
-	    public async Task AddNewEntry(int id, string customerId, string email, string name, string subscription)
+	    public async Task AddNewEntry(string customerId, string email, string name, string subscription)
 	    {
-		    var queryRequest = RequestBuilder(id, customerId, email,name,subscription);
+		    var queryRequest = RequestBuilder(customerId, email,name,subscription);
 
 		    await AddUserAsync(queryRequest);
 	    }
 
-        private PutItemRequest RequestBuilder(int id, string customerId, string email, string name, string subscription)
+        private PutItemRequest RequestBuilder(string customerId, string email, string name, string subscription)
 	    {
 		    var item = new Dictionary<string, AttributeValue>
 		    {
-			    {"id", new AttributeValue {N = id.ToString()}},
-			    {"customerId", new AttributeValue {S = customerId}},
+			    {"id", new AttributeValue {S = customerId}},
                 {"customerEmail", new AttributeValue {S = email}},
 				{"customerName", new AttributeValue {S = name}},
 				{"subscription", new AttributeValue {S = subscription}}

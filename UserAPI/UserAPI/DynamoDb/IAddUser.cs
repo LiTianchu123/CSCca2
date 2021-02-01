@@ -7,6 +7,6 @@ namespace UserAPI.DynamoDb
 {
     public interface IAddUser
     {
-        Task AddNewEntry(int id, string customerId, string email, string name, string subscription);
+        Task AddNewEntry(string customerId, string email, string name, string subscription);
     }
 }
