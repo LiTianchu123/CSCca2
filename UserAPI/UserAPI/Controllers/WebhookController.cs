@@ -47,14 +47,15 @@ namespace UserAPI.Controllers
                     var customerId = cus.Id;
                     var customerName = cus.Name;
                     var customerEmail = cus.Email;
+                    try
+                    {
+                       await _putItem.AddNewEntry(customerId, customerEmail, customerName, "No Subscription");
+                    }
+                    catch (Exception e)
+                    {
+                       
+                    }
 
-                }
-                else if (stripeEvent.Type == Events.CustomerSubscriptionCreated)
-                {
-                    Subscription sub = stripeEvent.Data.Object as Subscription;
-                    Price price = sub.Items.Data[0].Price;
-                    int amount = (int)price.UnitAmount;
-                    string subscriptionId = sub.Items.Data[0].Subscription;
 
                 }
                 else if (stripeEvent.Type == Events.CustomerSubscriptionUpdated)
@@ -74,8 +75,6 @@ namespace UserAPI.Controllers
 
                     }
                 }
-
-
                 else
                 {
                     Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
