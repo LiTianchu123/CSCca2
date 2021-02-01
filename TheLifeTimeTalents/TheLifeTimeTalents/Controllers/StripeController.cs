@@ -48,21 +48,40 @@ namespace TheLifeTimeTalents.Controllers
             List<object> resultList = new List<object>();
             try
             {
-                var options = new PriceListOptions { Currency = "sgd" };
-                var service = new PriceService();
-                StripeList<Price> prices = service.List(options);
-
-                foreach (Price p in prices)
+                
+                var options = new ProductListOptions
+                {
+                    Active = true,
+                };
+                var service = new ProductService();
+                StripeList<Product> products = service.List(
+                  options
+                );
+                foreach (Product p in products)
                 {
 
-                    float amount = (float)p.UnitAmount / 100;
+                    var priceOptions = new PriceListOptions { Currency = "sgd",Active=true, Product=p.Id };
+                    var priceService = new PriceService();
+                    StripeList<Price> prices = priceService.List(priceOptions);
+                    float amount = 0.0F;
+                    string priceId = "";
+                    foreach (Price pr in prices)
+                    {
+                        priceId = pr.Id;
+                        amount = (float)pr.UnitAmount / 100;
+                    }
                     string id = p.Id;
+                    string name = p.Name;
+
                     resultList.Add(new
                     {
                         id = id,
+                        priceId = priceId,
+                        name = name,
                         amount = amount,
                     });
                 }
+
             }
             catch
             {
@@ -72,7 +91,7 @@ namespace TheLifeTimeTalents.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubscriptionList()
+        public IActionResult GetSubscription(string customerId)
         {
 
             StripeConfiguration.ApiKey = "sk_test_51I2fLjHVInnZqCxx5mfcY7lp7tH89t76L6SUNcISWHiC94j65SejSjybi0FDcROhbxnGkgnatlpcrPEGBwfUoDgQ00DYHAjbZ2";
@@ -81,6 +100,7 @@ namespace TheLifeTimeTalents.Controllers
             {
                 var options = new SubscriptionListOptions
                 {
+                    Customer=customerId
                 };
                 var service = new SubscriptionService();
                 StripeList<Stripe.Subscription> subscriptions = service.List(
@@ -91,11 +111,11 @@ namespace TheLifeTimeTalents.Controllers
                 {
 
                     string id = s.Items.Data[0].Subscription;
-                    float amount = (float)s.Items.Data[0].Plan.Amount / 100;
+                    string productId = s.Items.Data[0].Price.ProductId;
                     resultList.Add(new
                     {
                         id = id,
-                        amount = amount,
+                        prodId = productId,
                     });
                 }
             }

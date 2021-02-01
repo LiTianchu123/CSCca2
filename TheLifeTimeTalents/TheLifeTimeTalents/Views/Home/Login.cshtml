@@ -1,0 +1,45 @@
+﻿<div id="container">
+    <div>Identity Platform Quickstart</div>
+    <div id="message">Loading...</div>
+    <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="email" name="email" required>
+        <label>Password</label>
+        <input type="password" id="password" name="password" required>
+        <input type="submit" id="submitBtn">
+    </form>
+</div>
+@section scripts{
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase.js"></script>
+    <style>
+    </style>
+    <script>
+        // Initialize Identity Platform
+        var config = {
+            apiKey: "AIzaSyAscPkHv9DIK8L4aW_JdFndUCNaVk_Tguw",
+            authDomain: "talent-303507.firebaseapp.com",
+        };
+        firebase.initializeApp(config);
+
+        $("#loginForm").submit(function (event) {
+            event.preventDefault();
+            var email = $('#email').val();
+            var password = $('#password').val();
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+                document.getElementById("message").innerHTML = error.message;
+            });
+        });
+
+       
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                document.getElementById("message").innerHTML = "Welcome, " + user.email;
+            } else {
+                document.getElementById("message").innerHTML = "No user signed in.";
+            }
+        });
+
+       
+    </script>
+}
