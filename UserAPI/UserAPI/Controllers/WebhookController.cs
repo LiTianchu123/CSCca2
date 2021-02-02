@@ -64,7 +64,7 @@ namespace UserAPI.Controllers
                     Price price = sub.Items.Data[0].Price;
                     int amount = (int)price.UnitAmount;
                     string subscriptionId = sub.Items.Data[0].Subscription;
-                    string customerId = sub.Customer.Id;
+                    string customerId = sub.CustomerId;
                     User response = new User();
                     try
                     {

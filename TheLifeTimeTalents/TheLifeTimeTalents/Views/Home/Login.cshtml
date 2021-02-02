@@ -1,0 +1,37 @@
+﻿<div id="container">
+    <div>User Login</div>
+    <div id="message">Loading...</div>
+    <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="email" name="email" required>
+        <label>Password</label>
+        <input type="password" id="password" name="password" required>
+        <input type="submit" id="submitBtn">
+    </form>
+</div>
+@section scripts{
+   
+    <style>
+    </style>
+    <script>
+        // Initialize Identity Platform
+     
+        $(document).ready(function () {
+            $("#loginForm").submit(function (event) {
+                event.preventDefault();
+                var email = $('#email').val();
+                var password = $('#password').val();
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+                    document.getElementById("message").innerHTML = error.message;
+                });
+            });
+
+
+        });
+      
+
+ 
+
+       
+    </script>
+}
