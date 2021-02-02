@@ -48,26 +48,14 @@
                 } else {
                     firebase.auth().createUserWithEmailAndPassword(email, password)
                         .then((userCredential) => {
-                            // Signed in 
-                            var user = userCredential.user;
-                            // ...
-                            $.toast({
-                                text: "Welcome, " + user.email,
-                                showHideTransition: 'slide',
-                                bgColor: '#f2f5ff',
-                                textColor: '#5170d6',
-                                allowToastClose: false,
-                                hideAfter: 3000,
-                                stack: 5,
-                                textAlign: 'center',
-                                position: 'top-right'
-                            });
+                            window.location = "/";
+                            
                         })
                         .catch((error) => {
                             var errorCode = error.code;
                             var errorMessage = error.message;
                             $.toast({
-                                text: "Error occured: " + errorMessage,
+                                text: errorMessage,
                                 showHideTransition: 'slide',
                                 bgColor: '#965d4d',
                                 textColor: '#ffffff',
