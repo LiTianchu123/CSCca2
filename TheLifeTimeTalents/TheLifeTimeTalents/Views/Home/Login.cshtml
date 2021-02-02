@@ -21,7 +21,9 @@
                 event.preventDefault();
                 var email = $('#email').val();
                 var password = $('#password').val();
-                firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+                firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+                    window.location = "/";
+                }).catch(function (error) {
                     document.getElementById("message").innerHTML = error.message;
                 });
             });
