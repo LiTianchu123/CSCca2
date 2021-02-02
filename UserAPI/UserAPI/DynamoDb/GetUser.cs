@@ -37,7 +37,7 @@ namespace UserAPI.DynamoDb
                 Id = result["id"].S,
                 CustomerEmail = result["customerEmail"].S,
                 CustomerName = result["customerName"].S,
-                Subscription = result["subscription"].S,
+                Plan = result["customerPlan"].S,
             };
         }
 
@@ -72,7 +72,7 @@ namespace UserAPI.DynamoDb
 
                 },
                 FilterExpression = "id = :v_Id",
-                ProjectionExpression = "id, customerEmail, customerName, subscription"
+                ProjectionExpression = "id, customerEmail, customerName, customerPlan"
             };
         }
 

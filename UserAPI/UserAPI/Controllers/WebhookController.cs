@@ -10,6 +10,7 @@ using UserAPI.Models;
 
 namespace UserAPI.Controllers
 {
+    [Route("api/Stripe")]
     public class WebhookController : Controller
     {
         private readonly IAddUser _putItem;
@@ -49,30 +50,35 @@ namespace UserAPI.Controllers
                     var customerEmail = cus.Email;
                     try
                     {
-                       await _putItem.AddNewEntry(customerId, customerEmail, customerName, "No Subscription");
+                       await _putItem.AddNewEntry(customerId, customerEmail, customerName, "No Plan");
                     }
                     catch (Exception e)
                     {
-                       
+                        return BadRequest();
                     }
 
 
                 }
-                else if (stripeEvent.Type == Events.CustomerSubscriptionUpdated)
+                else if (stripeEvent.Type == Events.CustomerSubscriptionUpdated || stripeEvent.Type == Events.CustomerSubscriptionCreated)
                 {
                     Subscription sub = stripeEvent.Data.Object as Subscription;
-                    Price price = sub.Items.Data[0].Price;
-                    int amount = (int)price.UnitAmount;
-                    string subscriptionId = sub.Items.Data[0].Subscription;
+                    string planId = sub.Items.Data[0].Plan.Id;
+                    //if (sub.Items.Data[0].Price.Product != null)
+                    //{
+                       // planId = sub.Items.Data[0].Plan.Id;
+                    //}
+                    //else if (sub.Items.Data[0].Price.ProductId != null) {
+                    //    planId = sub.Items.Data[0].Price.ProductId;
+                    //}
                     string customerId = sub.CustomerId;
                     User response = new User();
                     try
                     {
-                        response = await _updateItem.Update(customerId, subscriptionId);
+                        response = await _updateItem.Update(customerId, planId);
                     }
                     catch (Exception e)
                     {
-
+                        return BadRequest();
                     }
                 }
                 else

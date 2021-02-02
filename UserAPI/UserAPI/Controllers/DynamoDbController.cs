@@ -28,11 +28,11 @@ namespace UserAPI.Controllers
 
         [HttpPost]
         [Route("AddUser")]
-        public IActionResult AddUser([FromQuery]string customerId, string email, string name, string subscription)
+        public IActionResult AddUser([FromQuery]string customerId, string email, string name, string plan)
         {
             try
             {
-                _putItem.AddNewEntry(customerId, email, name, subscription);
+                _putItem.AddNewEntry(customerId, email, name, plan);
             }
             catch (Exception e)
             {
@@ -62,12 +62,12 @@ namespace UserAPI.Controllers
 
         [HttpPut]
         [Route("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromQuery] string customerId, string subscription)
+        public async Task<IActionResult> UpdateUser([FromQuery] string customerId, string plan)
         {
             User response = new User();
             try
             {
-                response = await _updateItem.Update(customerId, subscription);
+                response = await _updateItem.Update(customerId, plan);
             }
             catch (Exception e)
             {

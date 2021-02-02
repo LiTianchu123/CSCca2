@@ -77,3 +77,8 @@ body {
 #logoutBtn {
     cursor: pointer;
 }
+
+#loginText {
+    pointer-events: none;
+    cursor: default;
+}

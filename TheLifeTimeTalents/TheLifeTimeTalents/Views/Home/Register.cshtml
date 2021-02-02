@@ -1,12 +1,23 @@
 ﻿<div id="container">
     <form id="registerForm">
         <h3>Register New User</h3>
-        <label>Email</label>
-        <input type="email" id="email" required/>
-        <label>Password</label>
-        <input type="password" id="password" required/>
-        <label>Password Confirmation</label>
-        <input type="password" id="confirmPassword" required/>
+        <div>
+            <label>Name</label>
+            <input type="text" id="name" required />
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" id="email" required />
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" id="password" required />
+        </div>
+        <div>
+            <label>Password Confirmation</label>
+            <input type="password" id="confirmPassword" required />
+        </div>
+    
         <input type="submit" id="submitBtn">
     </form>
 </div>
@@ -21,6 +32,7 @@
                 var email = $('#email').val();
                 var password = $('#password').val();
                 var confirmPassword = $('#confirmPassword').val();
+                var name = $('#name').val();
                 if (password.length < 8) {
                     $.toast({
                         text: "Password length have be more than or equal to 8 characters",
@@ -45,11 +57,63 @@
                         textAlign: 'left',
                         position: 'top-right'
                     });
-                } else {
+                } else if (name.trim() == ""){
+                    $.toast({
+                        text: "Name cannot be empty",
+                        showHideTransition: 'slide',
+                        bgColor: '#965d4d',
+                        textColor: '#ffffff',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'left',
+                        position: 'top-right'
+                    });
+                }
+                else {
                     firebase.auth().createUserWithEmailAndPassword(email, password)
                         .then((userCredential) => {
-                            window.location = "/";
-                            
+                            var user = firebase.auth().currentUser;
+
+                            user.updateProfile({
+                                displayName: name,
+                            }).then(function () {
+                                $.ajax({
+                                    method: "POST",
+                                    url: "/Stripe/AddCustomer",
+                                    data: { email: email,name:name }
+                                }).done(function (data) {
+                                    window.location = "/";
+                                }).fail(function (data) {
+                                    $.toast({
+                                        text: "Error occured when creating the customer information",
+                                        showHideTransition: 'slide',
+                                        bgColor: '#965d4d',
+                                        textColor: '#ffffff',
+                                        allowToastClose: false,
+                                        hideAfter: 3000,
+                                        stack: 5,
+                                        textAlign: 'left',
+                                        position: 'top-right'
+                                    });
+                                });
+                             
+                            }).catch(function (error) {
+                          
+                                var errorMessage = error.message;
+                                $.toast({
+                                    text: errorMessage,
+                                    showHideTransition: 'slide',
+                                    bgColor: '#965d4d',
+                                    textColor: '#ffffff',
+                                    allowToastClose: false,
+                                    hideAfter: 3000,
+                                    stack: 5,
+                                    textAlign: 'left',
+                                    position: 'top-right'
+                                });
+                            });
+                       
                         })
                         .catch((error) => {
                             var errorCode = error.code;
