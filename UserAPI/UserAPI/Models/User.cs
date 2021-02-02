@@ -5,7 +5,7 @@
         public string Id { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerName { get; set; }
-        public string Subscription { get; set; }
+        public string Plan { get; set; }
         
     }
 }

@@ -17,58 +17,60 @@
         </style>
 <script>
     var planList = [];
-    $.ajax({
-        method: "GET",
-        url: "/Stripe/GetAllProducts",
- 
-    }).done(function (data) {
-        
-        for (var i = 0; i < data.value.length; i++) {
-            var amount = data.value[i].amount;
-            var planDescription = data.value[i].name;
-            var priceId = data.value[i].priceId;
-            var productId = data.value[i].id;
-            $('#planContainer').append(`<p id=${priceId}>${planDescription} ${amount}S$/day</p>`);
-            planList.push({ priceId: priceId, planDescription: planDescription, amount: amount, productId: productId });
-        }
-        console.dir(1);
-        console.dir(planList);
-        getSubscription();
-    }).fail(function (data) {
+    $(window).on('load', function () {
 
-    });
-    function getSubscription() {
         $.ajax({
             method: "GET",
-            url: "/Stripe/GetSubscription",
-            data: { customerId: "cus_IhyVFRJRWlxfwh" },
-          
+            url: "/Stripe/GetAllProducts",
         }).done(function (data) {
-            console.dir(2);
-            console.dir(planList);
             for (var i = 0; i < data.value.length; i++) {
-                for (var y = 0; y < planList.length; y++) {
-                    if (data.value[i].prodId == planList[y].productId) {
-                        $("#planText").css('display', 'block');
-                        $('#planName').text(planList[y].planDescription);
+                var amount = data.value[i].amount;
+                var planDescription = data.value[i].name;
+                var priceId = data.value[i].priceId;
+                var productId = data.value[i].id;
+                $('#planContainer').append(`<p id=${priceId}>${planDescription} ${amount}S$/day</p>`);
+                planList.push({ priceId: priceId, planDescription: planDescription, amount: amount, productId: productId });
+            }
+            getSubscription();
+        }).fail(function (data) {
+
+        });
+
+        function getSubscription() {
+            $.ajax({
+                method: "GET",
+                url: "/Stripe/GetSubscription",
+                data: { customerId: sessionStorage.getItem('customerId') },
+
+            }).done(function (data) {
+                console.dir(2);
+                console.dir(planList);
+                for (var i = 0; i < data.value.length; i++) {
+                    for (var y = 0; y < planList.length; y++) {
+                        if (data.value[i].prodId == planList[y].productId) {
+                            $("#planText").css('display', 'block');
+                            $('#planName').text(planList[y].planDescription);
+                        }
                     }
                 }
-            }
-        }).fail(function (data) {
+            }).fail(function (data) {
+
+            });
+
+        }
+
+        $('#managePlanBtn').on('click', function () {
+            $.ajax({
+                method: "POST",
+                url: "/Stripe/CustomerPortal",
+                data: { customerId: sessionStorage.getItem('customerId') }
+            }).done(function (data) {
+                window.location = data;
+            }).fail(function (data) {
+            });
 
         });
-
-    }
- 
-    $('#managePlanBtn').on('click', function () {
-        $.ajax({
-            method: "POST",
-            url: "/Stripe/CustomerPortal",
-        }).done(function (data) {
-            window.location = data;
-        }).fail(function (data) {
-        });
-
     });
+  
     </script>
 }

@@ -26,7 +26,7 @@
                     @* <partial name="_LoginPartial" />*@
                     <ul class="navbar-nav">
                         <li class="nav-item loginItem">
-                            <a class="navbar-brand" id="loginText" asp-area=""></a>
+                            <a class="navbar-brand" id="loginText" asp-area="" onclick="return false;"></a>
                         </li>
                         <li class="nav-item loginItem">
                             <a class="nav-link text-dark" id="logoutBtn">Logout</a>
@@ -42,7 +42,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item loginItem">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Products">Products</a>
                         </li>
                     </ul>
@@ -63,7 +63,7 @@
     </footer>
  
     <script>
-
+        var userType = "Free";
         var config = {
             apiKey: "AIzaSyAscPkHv9DIK8L4aW_JdFndUCNaVk_Tguw",
             authDomain: "talent-303507.firebaseapp.com",
@@ -72,19 +72,47 @@
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                $('#loginText').text("Welcome, " + user.email);
-                $('.loginItem').css('display', 'block');
-                $('.logoutItem').css('display', 'none');
-                if (sessionStorage.getItem("loginStatus") != "loggedIn") {
-                    sessionStorage.setItem("loginStatus", "loggedIn");
+                $.ajax({
+                    method: "GET",
+                    url:"/Stripe/GetCustomer"
+                }).done(function (data) {
+                    for (var i = 0; i < data.value.length; i++) {
+                        sessionStorage.setItem('customerId', data.value[i].id);
+                        if (data.value[i].amount != 0) {
+                            userType = "Paid";
+                        }
+                        console.dir(userType);
+                    }
+                }).fail(function (data) {
+                    $.toast({
+                        text: "Error occured during login",
+                        showHideTransition: 'slide',
+                        bgColor: '#965d4d',
+                        textColor: '#ffffff',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'left',
+                        position: 'top-right'
+                    });
+                });
+                $('#loginText').text("Welcome, " + user.displayName);
+                if (user.displayName != null) {
+                    $('.loginItem').css('display', 'block');
+                    $('.logoutItem').css('display', 'none');
                 }
+               
+                //if (sessionStorage.getItem("loginStatus") != "loggedIn") {
+                //    sessionStorage.setItem("loginStatus", "loggedIn");
+                //}
             
             } else {
                 $('.logoutItem').css('display', 'block');
                 $('.loginItem').css('display', 'none');
-                if (sessionStorage.getItem("loginStatus") != "loggedOut") {
-                    sessionStorage.setItem("loginStatus", "loggedOut");
-                }
+                //if (sessionStorage.getItem("loginStatus") != "loggedOut") {
+                //    sessionStorage.setItem("loginStatus", "loggedOut");
+                //}
+                sessionStorage.setItem('customerId', "");
             }
         });
 
