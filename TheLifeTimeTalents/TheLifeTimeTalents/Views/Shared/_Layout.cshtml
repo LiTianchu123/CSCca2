@@ -4,6 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TheLifeTimeTalents</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-toast/jquery.toast.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase.js"></script>
+    <link rel="stylesheet" href="~/lib/jquery-toast/jquery.toast.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -41,9 +47,50 @@
             &copy; 2021 - TheLifeTimeTalents - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+ 
+    <script>
+
+        var config = {
+            apiKey: "AIzaSyAscPkHv9DIK8L4aW_JdFndUCNaVk_Tguw",
+            authDomain: "talent-303507.firebaseapp.com",
+        };
+        firebase.initializeApp(config);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                if (sessionStorage.getItem("loginStatus") != "loggedIn") {
+                    $.toast({
+                        text: "Welcome, " + user.email,
+                        showHideTransition: 'slide',
+                        bgColor: '#f2f5ff',
+                        textColor: '#5170d6',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'center',
+                        position: 'top-right'
+                    });
+                    sessionStorage.setItem("loginStatus", "loggedIn");
+                }
+            
+            } else {
+                if (sessionStorage.getItem("loginStatus") != "loggedOut") {
+                    $.toast({
+                        text: "You have not signed in",
+                        showHideTransition: 'slide',
+                        bgColor: '#f2f5ff',
+                        textColor: '#5170d6',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'center',
+                        position: 'top-right'
+                    });
+                    sessionStorage.setItem("loginStatus", "loggedOut");
+                }
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
