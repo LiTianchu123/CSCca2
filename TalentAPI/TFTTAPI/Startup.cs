@@ -31,6 +31,14 @@ namespace TFTTAPI
             services.AddControllers();
        
             services.AddDbContext<TalentContext>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Policy1",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -44,7 +52,7 @@ namespace TFTTAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
