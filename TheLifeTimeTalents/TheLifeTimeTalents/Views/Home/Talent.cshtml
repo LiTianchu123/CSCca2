@@ -1,0 +1,231 @@
+﻿<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://sdk.clarifai.com/js/clarifai-latest.js"></script>
+<script>
+    AWS.config.update({
+        accessKeyId: 'ASIA6CJKPEFDM3TGUFNJ',
+        secretAccessKey: 'iQTlsHOqi/KxgFSu8DToymxQpR3DJ/5yoXyxKdYx',
+        sessionToken: 'FwoGZXIvYXdzEAwaDFH2XsVDkmuV0pssuSLKAQ39hL8DRePu6NnZ5cm6ZUjet8mQfta8bwa236ODSVuNgIYh1HpPV90kzB6GLxYsd5H3xwePWX3K/jdonXZ/5C+QiMHQ7dmVqx/A4GhpLq6A9v42WuNiZNANLMPOsrkLzg0yv7OvqUZbS2T9CARPSiQQa9m0gUiYRLbLvFsAM3XZ+/17dmpX9QWplwBGXjUDnVygPSg2CqQseWzcI/VOhlYwioyPb3OG+Wzmof9NDRzxkrCiqXkKgUr1V/OJ+8LHTihVCbOkJjabgmwo9ZrogAYyLc6SlaoK291U4bBwcHFup/BIekeEYxgsBAq8VxEI30N/rBPE84IDSgWvV3/+7g=='
+    });
+    AWS.config.region = 'us-east-1';
+
+    try {
+        var app = new Clarifai.App({
+            apiKey: '273a31f83066475ba4b52e58c1b0c967'
+        });
+    }
+    catch (err) {
+        alert("Need a valid API Key!");
+        throw "Invalid API Key";
+    }
+
+    // Checks for valid image type
+    function validFile(imageName) {
+        var lowerImageName = imageName.toLowerCase();
+        return lowerImageName.search(/jpg|png|bmp|tiff/gi) != -1;
+    }
+</script>
+
+<body>
+    <button class="btn-outline-primary" id="talentBtn">Add talent</button>
+
+    <div id="imgContainer"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addTalentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Talent</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <label for="addName">Name :</label>
+                        <input type="text" name="addName" id="addName" value="" required>
+
+                        <label for="addShortName">Short Name :</label>
+                        <input type="text" name="addShortName" id="addShortName" value="" required>
+
+                        <label for="addReknown">Reknown :</label>
+                        <input type="text" name="addReknown" id="addReknown" value="" required>
+
+                        <label for="addBio">Bio:</label>
+                        <textarea id="addBio" name="addBio" rows="4" cols="50" required></textarea>
+
+                        <input type="file" name="file" id="file" value="dataFile" required="">
+                        <br />
+                        <div class="modal-footer">
+                            <!-- <input type="submit" name="submit" class="btn btn-block btn-warning" value="Save changes" /> -->
+                            <button type="submit" name="submit" class="btn btn-success" id="addTalent" value="Add" onclick="if(file.value == '') {
+                                alert('Please browse for a file!');
+                                return;
+                              }
+
+                              else if (!validFile(file.value)) {
+                                alert('Supported File Types: JPEG, PNG, TIFF, BMP');
+                                return;
+                              }
+                              predict_click($('#file').val(), 'file');">
+                                Upload to S3
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                        @*<input type="submit" id="addBtn" class="submitBtn">*@
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    
+</body>
+@section scripts{
+    <script>
+        var talent;
+        var editId = 0;
+        var editBio = '';
+        $.ajax({
+            method: 'GET',
+            url: ' https://rcfl5otx2c.execute-api.us-east-1.amazonaws.com/Prod/api/Talent/GetAllTalent',
+            statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "https://www.example.com",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
+        }).done(function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var id = data[i].id;
+                var name = data[i].name;
+                var shortName = data[i].shortName;
+                var profile = data[i].profile;
+                var bio = data[i].bio;
+                var reknown = data[i].reknown;
+                let $item = $(`<div class="image">
+                    <a href="TalentDetail?id=${id}">
+                        <div class="imgbox">
+                            <img src="${profile}" alt="${name}">
+                        </div>
+                    </a>
+                    <p>${name}</p>
+                </div>`);
+                $('#imgContainer').append($item);
+            }
+            console.log(data)
+        }).fail(function (data) {
+           console.log('fail')
+        });
+
+        var s3BucketName = 'csc2021ca2';
+
+        function predict_click(value, source) {
+
+            if (source === "url") {
+                doPredict({ url: value });
+
+                // Div Stuff
+                createHiddenDivs("url", value);
+            }
+
+            else if (source === "file") {
+                var file = document.querySelector("input[type=file]").files[0];
+                var reader = new FileReader();
+
+                // load local file picture
+                reader.addEventListener("load", function () {
+                    var localBase64 = reader.result.split("base64,")[1];
+                    doPredict({ base64: localBase64 });
+
+                }, false);
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        /*Purpose: Does a v2 prediction based on user input
+        Args:
+        value - Either {url : urlValue} or { base64 : base64Value }*/
+        function doPredict(value) {
+
+            var modelID = "TalentSearch";
+
+            app.models.predict(modelID, value).then(
+
+                function (response) {
+                    console.log(response);
+                    var tagArray;
+                    var modelName = response.rawData.outputs[0].model.name;
+
+                    console.log(modelName)
+                    console.log(response.rawData.outputs[0])
+                    if (response.rawData.outputs[0].data.hasOwnProperty("concepts")) {
+                        try {
+                            tagArray = response.rawData.outputs[0].data.concepts;
+                            var checkTalent = true;
+                            for (var other = 0; other < tagArray.length; other++) {
+                                if (tagArray[other].name == "human") {
+                                    if (tagArray[other].value < 0.6) {
+                                        checkTalent = false;
+                                        console.log(tagArray[other].value)
+                                    }
+                                }
+                            }
+
+                            if (!checkTalent) {
+                                window.alert("Not A TALENT")
+                            } else {
+                                var s3 = new AWS.S3({
+                                    params: { Bucket: 'csc2021ca2' }
+                                });
+                                var file = document.getElementById('file').files[0];
+                                if (file) {
+                                    s3.putObject({
+                                        Key: file.name,
+                                        ContentType: file.type,
+                                        Body: file,
+                                        ACL: "public-read"
+                                    },
+                                        function (err, data) {
+                                            if (data !== null) {
+                                                alert("Got it!");
+                                            }
+                                            else {
+                                                alert("Upload failed!");
+                                            }
+                                        });
+                                }
+
+                            }
+                            tagCount = tagArray.length;
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+
+                    // Bad region request
+                    else {
+                        return;
+                    }
+
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        }
+
+        document.getElementById('talentBtn').addEventListener(
+            'click',
+            function () {
+                $('#addTalentModal').modal('show');
+
+            });
+
+    </script>
+}

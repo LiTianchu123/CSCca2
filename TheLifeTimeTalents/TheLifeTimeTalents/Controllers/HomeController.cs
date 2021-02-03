@@ -28,6 +28,16 @@ namespace TheLifeTimeTalents.Controllers
             return View();
         }
 
+        public IActionResult Talent()
+        {
+            return View();
+        }
+
+        public IActionResult TalentDetail()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
