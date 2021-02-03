@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,12 +28,22 @@ namespace TheLifeTimeTalents.Controllers
             return View();
         }
 
+
         public IActionResult Talent()
         {
             return View();
         }
 
         public IActionResult TalentDetail()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+        public IActionResult Login()
         {
             return View();
         }

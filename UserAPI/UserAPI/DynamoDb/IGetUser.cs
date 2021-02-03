@@ -8,6 +8,6 @@ namespace UserAPI.DynamoDb
 {
     public interface IGetUser
     {
-        Task<DynamoTableUsers> GetUsers(int? id);
+        Task<DynamoTableUsers> GetUsers(string customerId);
     }
 }

@@ -18,9 +18,9 @@ namespace UserAPI.DynamoDb
             _dynamoClient = dynamoClient;
         }
 
-        public async Task<DynamoTableUsers> GetUsers(int? id)
+        public async Task<DynamoTableUsers> GetUsers(string customerId)
         {
-            var queryRequest = RequestBuilder(id);
+            var queryRequest = RequestBuilder(customerId);
 
             var result = await ScanAsync(queryRequest);
 
@@ -34,11 +34,10 @@ namespace UserAPI.DynamoDb
         {
             return new User
             {
-                Id = Convert.ToInt32(result["id"].N),
-                CustomerId = result["customerId"].S,
+                Id = result["id"].S,
                 CustomerEmail = result["customerEmail"].S,
                 CustomerName = result["customerName"].S,
-                Subscription = result["subscription"].S,
+                Plan = result["customerPlan"].S,
             };
         }
 
@@ -46,21 +45,17 @@ namespace UserAPI.DynamoDb
         
         {
             ScanResponse response = new ScanResponse();
-            //try
-            //{
+         
                 response = await _dynamoClient.ScanAsync(request);
              
-            //}
-            //catch (Exception e) {
-               
-            //}
+          
             return response;
 
         }
 
-        private ScanRequest RequestBuilder(int? id)
+        private ScanRequest RequestBuilder(string id)
         {
-            if (id.HasValue == false)
+            if (id == null || id=="")
             {
                 return new ScanRequest
                 {
@@ -73,11 +68,11 @@ namespace UserAPI.DynamoDb
                 TableName = "Users",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
                     {
-                        ":v_Id", new AttributeValue { N = id.ToString()}}
+                        ":v_Id", new AttributeValue { S = id}}
 
                 },
                 FilterExpression = "id = :v_Id",
-                ProjectionExpression = "id, customerId, customerEmail, customerName, subscription"
+                ProjectionExpression = "id, customerEmail, customerName, customerPlan"
             };
         }
 

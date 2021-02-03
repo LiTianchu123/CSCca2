@@ -20,25 +20,25 @@ namespace UserAPI.DynamoDb
             _dynamoDbClient = dynamoDbClient;
         }
 
-        public async Task<User> Update(int id, string subscription)
+        public async Task<User> Update(string customerId, string plan)
         {
-            var response = await _getUser.GetUsers(id);
+            var response = await _getUser.GetUsers(customerId);
 
-            var currentSubscription = response.Users.Select(p => p.Subscription).FirstOrDefault();
+            var currentplan = response.Users.Select(p => p.Plan).FirstOrDefault();
            
 
-            var request = RequestBuilder(id, subscription, currentSubscription);
+            var request = RequestBuilder(customerId, plan, currentplan);
 
             var result = await UpdateItemAsync(request);
 
             return new User
             {
-                Id = Convert.ToInt32(result.Attributes["id"].N),
-                Subscription = result.Attributes["subscription"].S,
+                Id = result.Attributes["id"].S,
+                Plan = result.Attributes["customerPlan"].S,
             };
         }
 
-        private UpdateItemRequest RequestBuilder(int id, string subscription, string currentSubscription)
+        private UpdateItemRequest RequestBuilder(string customerId, string plan, string currentplan)
         {
             var request = new UpdateItemRequest
             {
@@ -47,33 +47,33 @@ namespace UserAPI.DynamoDb
                     {
                         "id", new AttributeValue
                         {
-                            N = id.ToString()
+                            S = customerId
                         }
                     }
                   
                 },
                 ExpressionAttributeNames = new Dictionary<string, string>
                 {
-                    {"#S", "subscription"}
+                    {"#S", "customerPlan"}
                 },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
                     {
-                        ":newsubscription", new AttributeValue
+                        ":newcustomerPlan", new AttributeValue
                         {
-                            S = subscription.ToString()
+                            S = plan.ToString()
                         }
                     },
                     {
-                        ":currsubscription", new AttributeValue
+                        ":currcustomerPlan", new AttributeValue
                         {
-                            S = currentSubscription.ToString()
+                            S = currentplan.ToString()
                         }
                     }
                 },
 
-                UpdateExpression = "SET #S = :newsubscription",
-                ConditionExpression = "#S = :currsubscription",
+                UpdateExpression = "SET #S = :newcustomerPlan",
+                ConditionExpression = "#S = :currcustomerPlan",
 
                 TableName = tableName,
                 ReturnValues = "ALL_NEW"

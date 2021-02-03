@@ -5,6 +5,6 @@ namespace UserAPI.DynamoDb
 {
     public interface IUpdateUser
     {
-        Task<User> Update(int id, string subscription);
+        Task<User> Update(string customerId, string plan);
     }
 }

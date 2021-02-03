@@ -11,44 +11,45 @@ namespace UserAPI.Controllers
     [Route("api/DynamoDb")]
     public class DynamoDbController : Controller
     {
-      //  private readonly ICreateTable _createTable;
+        //  private readonly ICreateTable _createTable;
         private readonly IAddUser _putItem;
         private readonly IGetUser _getItem;
         private readonly IUpdateUser _updateItem;
-      //  private readonly IDeleteTable _deleteTable;
+        //  private readonly IDeleteTable _deleteTable;
 
         public DynamoDbController(IAddUser putItem, IGetUser getItem, IUpdateUser updateItem)
         {
-           // _createTable = createTable;
+            // _createTable = createTable;
             _putItem = putItem;
             _getItem = getItem;
             _updateItem = updateItem;
-           // _deleteTable = deleteTable;
+            // _deleteTable = deleteTable;
         }
-     
+
         [HttpPost]
         [Route("AddUser")]
-        public IActionResult AddUser([FromQuery] int id, string customerId, string email, string name, string subscription)
+        public IActionResult AddUser([FromQuery]string customerId, string email, string name, string plan)
         {
-            //try
-            //{
-                _putItem.AddNewEntry(id, customerId, email, name, subscription);
-            //}
-            //catch(Exception e) {
-            //    BadRequest(e.Message);
-            //}
+            try
+            {
+                _putItem.AddNewEntry(customerId, email, name, plan);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
             return Ok();
         }
 
         [HttpGet]
         [Route("GetUser")]
-        public async Task<IActionResult> GetUser([FromQuery] int? id)
+        public async Task<IActionResult> GetUser([FromQuery] string customerId)
         {
             DynamoTableUsers response = new DynamoTableUsers();
             try
             {
-                response = await _getItem.GetUsers(id);
+                response = await _getItem.GetUsers(customerId);
 
 
             }
@@ -61,17 +62,18 @@ namespace UserAPI.Controllers
 
         [HttpPut]
         [Route("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromQuery] int id, string subscription)
+        public async Task<IActionResult> UpdateUser([FromQuery] string customerId, string plan)
         {
             User response = new User();
-            //try
-            //{
-                 response = await _updateItem.Update(id, subscription);
-            //}
-            //catch (Exception e) {
-            //    BadRequest(e.Message);
-            //}
-          
+            try
+            {
+                response = await _updateItem.Update(customerId, plan);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
 
             return Ok(response);
         }
