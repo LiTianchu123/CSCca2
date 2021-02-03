@@ -113,10 +113,12 @@ namespace TheLifeTimeTalents.Controllers
 
                     string id = s.Items.Data[0].Subscription;
                     string productId = s.Items.Data[0].Price.ProductId;
+                    string priceId = s.Items.Data[0].Price.Id;
                     resultList.Add(new
                     {
                         id = id,
                         prodId = productId,
+                        priceId = priceId
                     });
                 }
             }
