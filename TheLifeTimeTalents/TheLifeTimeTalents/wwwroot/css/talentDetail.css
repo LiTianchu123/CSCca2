@@ -1,0 +1,60 @@
+﻿body {
+}
+
+div#imgContainer {
+    margin: 1em 0;
+}
+
+div#imgBox {
+    width: 15em;
+    height: 15em;
+    overflow: hidden;
+    float: left;
+    margin: 0em 2em 1em 1em;
+}
+
+img#img {
+    height: 15em;
+    width: auto;
+}
+
+input, textarea {
+    width: 100%;
+}
+
+.deleteContainer {
+    width: 600px;
+    background: #fff;
+    margin: auto;
+    margin-top: 3em;
+    padding: 50px;
+}
+
+    .deleteContainer h1 {
+        color: #000;
+        font-size: 30px;
+        text-align: center;
+    }
+
+button.cancelbtn, button.deletebtn {
+    width: 45%;
+    margin: 0 2%;
+    height: 50px;
+}
+
+
+p#deleteText {
+    /* padding: 10px 20px; */
+    margin: 100px 0;
+    text-align: center;
+}
+
+button#deleteBtn {
+    color: #fff;
+    background: #f76060;
+}
+
+div#textBox {
+    margin-bottom: 2em;
+    height: 11em;
+}
