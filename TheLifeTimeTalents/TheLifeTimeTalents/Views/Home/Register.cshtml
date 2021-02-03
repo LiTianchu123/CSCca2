@@ -72,7 +72,6 @@
                     firebase.auth().createUserWithEmailAndPassword(email, password)
                         .then((userCredential) => {
                             var user = firebase.auth().currentUser;
-
                             user.updateProfile({
                                 displayName: name,
                             }).then(function () {
