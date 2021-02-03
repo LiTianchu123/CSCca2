@@ -1,13 +1,15 @@
-﻿<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="https://sdk.clarifai.com/js/clarifai-latest.js"></script>
+﻿<link rel="stylesheet" href="~/css/talentDetail.css">
 <script>
-    AWS.config.update({
-        accessKeyId: 'ASIA6CJKPEFDM3TGUFNJ',
-        secretAccessKey: 'iQTlsHOqi/KxgFSu8DToymxQpR3DJ/5yoXyxKdYx',
-        sessionToken: 'FwoGZXIvYXdzEAwaDFH2XsVDkmuV0pssuSLKAQ39hL8DRePu6NnZ5cm6ZUjet8mQfta8bwa236ODSVuNgIYh1HpPV90kzB6GLxYsd5H3xwePWX3K/jdonXZ/5C+QiMHQ7dmVqx/A4GhpLq6A9v42WuNiZNANLMPOsrkLzg0yv7OvqUZbS2T9CARPSiQQa9m0gUiYRLbLvFsAM3XZ+/17dmpX9QWplwBGXjUDnVygPSg2CqQseWzcI/VOhlYwioyPb3OG+Wzmof9NDRzxkrCiqXkKgUr1V/OJ+8LHTihVCbOkJjabgmwo9ZrogAYyLc6SlaoK291U4bBwcHFup/BIekeEYxgsBAq8VxEI30N/rBPE84IDSgWvV3/+7g=='
-    });
+    try {
+        AWS.config.update({
+            accessKeyId: 'ASIA6CJKPEFDBGS4A5TT',
+            secretAccessKey: 'UbGIFIf4hmjqhN5AGJrc7A097mRCT/LHsbpKcRBI',
+            sessionToken: 'FwoGZXIvYXdzEBYaDIRJ046jAnRepu79wCLKAakLk/cE9huoZV8x2CUS+LtqJHlBvab0mUUKkrhHjUDnPxRkarGnvEMLLMHDJi3WOeWaJ80GDtwX2jRvbONGAQSdZC4BkCSUPvEfbXsyljmDUfG0GuEDdhNHVrQFeLPQWKkNTu6Yzzrken9Aslu7hXtyXpQ9mVw5Qqz1DzBCK9ZB6iD4JgLwsm/0RyB6icjN/K0srGgPBCP1vUup7a13rnuy/+v0Ra0t9pu6EBiOGCUS61PP+xO+k4+FCUt8clzJeor2ORkj2qI0iCoowL3qgAYyLZXZQNeuvnQI+S8J/khz1vZFCdqrN4H/HITFYyNwL2yVu/+iCiXC2aPGvIKokA=='
+        });
+    }catch (err) {
+        alert("Need a valid aws API Key!");
+        throw "Invalid API Key";
+    }
     AWS.config.region = 'us-east-1';
 
     try {
@@ -16,7 +18,7 @@
         });
     }
     catch (err) {
-        alert("Need a valid API Key!");
+        alert("Need a valid clarifai API Key!");
         throw "Invalid API Key";
     }
 
@@ -28,17 +30,37 @@
 </script>
 
 <body>
-    <button class="btn-outline-primary" id="editTalentBtn">Edit talent</button>
-    <button class="btn-outline-danger" id="deleteTalentBtn">Delete talent</button>
     <div id="imgContainer">
         <div id="imgBox">
             <img src="" id="img" alt="">
         </div>
-        <p id="name"></p>
-        <p id="bio"></p>
-        <p id="reknown"></p>
+        <div id="textBox">
+            <p id="name"></p>
+            <p id="bio"></p>
+            <p id="reknown"></p>
+        </div>
+        <button class="btn-outline-primary" id="editTalentBtn">Edit talent</button>
+        <button class="btn-outline-danger" id="deleteTalentBtn">Delete talent</button>
     </div>
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
 
+        var disqus_config = function () {
+            this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
+            //this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://tltt-1.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
     <!-- Modal -->
     <div class="modal fade" id="editTalentModal" role="dialog">
@@ -63,20 +85,11 @@
                         <label for="editBio">Bio:</label>
                         <textarea id="editBio" name="editBio" rows="4" cols="50" required></textarea>
 
-                        <input type="file" name="file" id="file" value="dataFile" required="">
+                        <input type="file" name="file" id="file" value="dataFile" >
                         <br />
                         <div class="modal-footer">
                             <!-- <input type="submit" name="submit" class="btn btn-block btn-warning" value="Save changes" /> -->
-                            <button type="submit" name="submit" class="btn btn-success" id="editTalent" value="Add" onclick="if(file.value == '') {
-                                alert('Please browse for a file!');
-                                return;
-                              }
-
-                              else if (!validFile(file.value)) {
-                                alert('Supported File Types: JPEG, PNG, TIFF, BMP');
-                                return;
-                              }//
-                              predict_click($('#file').val(), 'file');">
+                            <button type="submit" name="submit" class="btn btn-success" id="editTalent" value="Edit">
                                 Save edit to S3
                             </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -86,6 +99,18 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="deleteContainer">
+            <h1>Delete Account</h1>
+            <p id="deleteText">Are you sure you want to delete account?</p>
+
+            <div class="clearfix">
+                <button type="button" class="cancelbtn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="deletebtn" id="deleteBtn">Delete</button>
+            </div>
         </div>
     </div>
 </body>
@@ -107,12 +132,13 @@
         var bio = '';
         var profile = '';
         var reknown = '';
+        var imgUrl = '';
         $.ajax({
             method: 'GET',
-            url: ' https://rcfl5otx2c.execute-api.us-east-1.amazonaws.com/Prod/api/Talent/GetTalentById/'+id,
+            url: ' https://rcfl5otx2c.execute-api.us-east-1.amazonaws.com/Prod/api/Talent/GetTalentById/' + id,
             statusCode: 200,
             headers: {
-                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Origin": "https://www.example.com",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
@@ -122,16 +148,93 @@
             bio = data.bio;
             reknown = data.reknown;
             profile = data.profile;
+            imgUrl = profile;
             $('#name').html(name);
             $('#bio').html(bio);
             $('#reknown').html(reknown);
             $('#img').attr("src", profile);
             console.log(data)
         }).fail(function (data) {
-           console.log('fail')
+            console.log('fail')
         });
 
-        var s3BucketName = 'csc2021ca2';
+        function editTalentDetail() {
+            var talent = {
+                Name: $("input[name='editName']").val(),
+                ShortName: $("input[name='editShortName']").val(),
+                Profile: imgUrl,
+                Bio: $("textarea#editBio").val(),
+                Reknown: $("input[name='editReknown']").val()
+            }
+            $.ajax({
+                method: "PUT",
+                url: ' https://rcfl5otx2c.execute-api.us-east-1.amazonaws.com/Prod/api/Talent/PutTalent/'+id,
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(talent),
+                statusCode: 200,
+                headers: {
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Origin": "https://www.example.com",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT"
+                },
+            }).done(function (data) {
+                $.toast({
+                    text: "Talent Edited Successfully!",
+                    showHideTransition: 'slide',
+                    bgColor: '#f2f5ff',
+                    textColor: '#5170d6',
+                    allowToastClose: false,
+                    hideAfter: 1000,
+                    stack: 5,
+                    textAlign: 'center',
+                    position: 'top-right'
+                });
+                setTimeout(function () { location.reload(); }, 1000);
+            }).fail(function (data) {
+                console.log(data.responseText)
+                if (data.responseText == undefined) {
+                    $.toast({
+                        text: data.responseText,
+                        showHideTransition: 'slide',
+                        bgColor: '#965d4d',
+                        textColor: '#ffffff',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'left',
+                        position: 'top-right'
+                    })
+                } else if (data.responseText.trim() == '' || data.responseText.trim() == null) {
+                    $.toast({
+                        text: "Talent Edited Successfully!",
+                        showHideTransition: 'slide',
+                        bgColor: '#f2f5ff',
+                        textColor: '#5170d6',
+                        allowToastClose: false,
+                        hideAfter: 1000,
+                        stack: 5,
+                        textAlign: 'center',
+                        position: 'top-right'
+                    });
+                    setTimeout(function () { location.reload(); }, 1000);
+                } else {
+                    $.toast({
+                        text: data.responseText,
+                        showHideTransition: 'slide',
+                        bgColor: '#965d4d',
+                        textColor: '#ffffff',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'left',
+                        position: 'top-right'
+                    })
+                }
+            });
+        }
+
+        var s3BucketName = 'csc1718s1';
 
         function predict_click(value, source) {
 
@@ -171,10 +274,6 @@
                 function (response) {
                     console.log(response);
                     var tagArray;
-                    var modelName = response.rawData.outputs[0].model.name;
-
-                    console.log(modelName)
-                    console.log(response.rawData.outputs[0])
                     if (response.rawData.outputs[0].data.hasOwnProperty("concepts")) {
                         try {
                             tagArray = response.rawData.outputs[0].data.concepts;
@@ -192,7 +291,7 @@
                                 window.alert("Not A TALENT")
                             } else {
                                 var s3 = new AWS.S3({
-                                    params: { Bucket: 'csc2021ca2' }
+                                    params: { Bucket: 'csc1718s1' }
                                 });
                                 var file = document.getElementById('file').files[0];
                                 if (file) {
@@ -204,10 +303,21 @@
                                     },
                                         function (err, data) {
                                             if (data !== null) {
-                                                alert("Got it!");
+                                                imgUrl = "https://csc1718s1.s3.amazonaws.com/" + file.name;
+                                                editTalentDetail();
                                             }
                                             else {
-                                                alert("Upload failed!");
+                                                $.toast({
+                                                    text: "Upload fail",
+                                                    showHideTransition: 'slide',
+                                                    bgColor: '#965d4d',
+                                                    textColor: '#ffffff',
+                                                    allowToastClose: false,
+                                                    hideAfter: 3000,
+                                                    stack: 5,
+                                                    textAlign: 'left',
+                                                    position: 'top-right'
+                                                });
                                             }
                                         });
                                 }
@@ -231,6 +341,21 @@
             );
         }
 
+        document.getElementById('editTalent').addEventListener(
+            'click',
+            function () {
+                if ($('#file').val() == '') {
+                    editTalentDetail();
+                }
+
+                else if (!validFile($('#file').val())) {
+                    alert('Supported File Types: JPEG, PNG, TIFF, BMP');
+                    return;
+                } else {
+                    predict_click($('#file').val(), 'file');
+                }
+            });
+
         document.getElementById('editTalentBtn').addEventListener(
             'click',
             function () {
@@ -238,10 +363,62 @@
                 $('input[name="editShortName"]').val(shortName);
                 //$('input[name="editProfile"]').val(profile);
                 $('textarea#editBio').val(bio);
-                
+
                 $('input[name="editReknown"]').val(reknown);
                 $('#editTalentModal').modal('show');
 
             });
+
+        document.getElementById('deleteTalentBtn').addEventListener(
+            'click',
+            function () {
+                $('#deleteModal').modal('show');
+
+            });
+
+        document.getElementById('deleteBtn').addEventListener(
+            'click',
+            function () {
+                $.ajax({
+                    method: "DELETE",
+                    url: ' https://rcfl5otx2c.execute-api.us-east-1.amazonaws.com/Prod/api/Talent/DeleteTalent/'+id,
+                    statusCode: 200,
+                    headers: {
+                        "Access-Control-Allow-Headers": "Content-Type",
+                        "Access-Control-Allow-Origin": "https://www.example.com",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                }).done(function (data) {
+                    $.toast({
+                        text: "Talent Delete Successfully!",
+                        showHideTransition: 'slide',
+                        bgColor: '#f2f5ff',
+                        textColor: '#5170d6',
+                        allowToastClose: false,
+                        hideAfter: 1000,
+                        stack: 5,
+                        textAlign: 'center',
+                        position: 'top-right'
+                    });
+                    setTimeout(function () { location.href="/Home/Talent"; }, 1000);
+                }).fail(function (data) {
+                    $.toast({
+                        text: data.responseText,
+                        showHideTransition: 'slide',
+                        bgColor: '#965d4d',
+                        textColor: '#ffffff',
+                        allowToastClose: false,
+                        hideAfter: 3000,
+                        stack: 5,
+                        textAlign: 'left',
+                        position: 'top-right'
+                    });
+                });
+
+            });
+
+        $('#editForm').submit(function (e) {
+            e.preventDefault();
+        });
     </script>
 }

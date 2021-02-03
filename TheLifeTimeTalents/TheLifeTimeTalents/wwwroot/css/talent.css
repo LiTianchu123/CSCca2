@@ -1,0 +1,26 @@
+﻿body {
+}
+
+div#imgContainer {
+    margin: 1em 0;
+}
+
+div.imgbox {
+    width: 10em;
+    height: 10em;
+    overflow: hidden;
+    margin: 20px;
+}
+
+img.img {
+    height: 10em;
+    width: auto;
+}
+
+.image {
+    display: inline-flex;
+}
+
+input, textarea {
+    width: 100%;
+}
