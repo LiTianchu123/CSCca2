@@ -29,7 +29,7 @@ namespace TheLifeTimeTalents.Controllers
                 var options = new SessionCreateOptions
                 {
                     Customer = customerId,
-                    ReturnUrl = "https://localhost:44362/",
+                    ReturnUrl = "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/Products",
                 };
                 var service = new SessionService();
                 session = service.Create(options);
