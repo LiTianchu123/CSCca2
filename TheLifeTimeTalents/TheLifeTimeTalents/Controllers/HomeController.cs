@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,6 +27,18 @@ namespace TheLifeTimeTalents.Controllers
         {
             return View();
         }
+
+
+        public IActionResult Talent()
+        {
+            return View();
+        }
+
+        public IActionResult TalentDetail()
+        {
+            return View();
+        }
+
         public IActionResult Register()
         {
             return View();
@@ -35,6 +47,7 @@ namespace TheLifeTimeTalents.Controllers
         {
             return View();
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
