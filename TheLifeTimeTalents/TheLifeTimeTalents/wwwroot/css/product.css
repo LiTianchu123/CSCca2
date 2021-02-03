@@ -1,0 +1,39 @@
+﻿#container {
+    width: 60%;
+    margin: auto;
+    padding: 20px;
+}
+
+    #container h1 {
+        font-size: 24px;
+        text-align: left;
+        text-align: center;
+    }
+
+#planText {
+    display: none;
+    text-align: center;
+}
+
+#planName {
+    font-weight: bold;
+}
+
+#planContainer {
+    margin: 30px auto;
+    border-bottom: 1px grey solid;
+    border-top: 1px grey solid;
+    padding: 50px 10px;
+    width: 50%;
+}
+
+    #planContainer div {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+    }
+
+#managePlanBtn {
+    margin: auto;
+    display: block;
+}

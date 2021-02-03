@@ -1,20 +1,13 @@
-﻿<div id="container">
+﻿<link rel="stylesheet" href="~/css/product.css">
+<div id="container">
     <h1>We Have The Following Plans:</h1>
     <div id="planContainer">
         </div>
-    <p id="planText">You are now on <span id="planName">No Plan</span></p>
+    <p id="planText">You are now on <span id="planName">No Plan</span>,<br>Your daily charge is S$<span id="amount">0</span></p>
     <button id="managePlanBtn">Manage Your Subscription</button>
     </div>
 @section scripts{ 
-    <style>
-        #planText {
-        display:none;
-        
-        }
-        #planName {
-        font-weight:bold;
-        }
-        </style>
+ 
 <script>
     var planList = [];
     $(window).on('load', function () {
@@ -28,7 +21,7 @@
                 var planDescription = data.value[i].name;
                 var priceId = data.value[i].priceId;
                 var productId = data.value[i].id;
-                $('#planContainer').append(`<p id=${priceId}>${planDescription} ${amount}S$/day</p>`);
+                $('#planContainer').append(`<div id=${priceId}><span>${planDescription}</span> <span>Charge: ${amount}S$/day</span></div>`);
                 planList.push({ priceId: priceId, planDescription: planDescription, amount: amount, productId: productId });
             }
             getSubscription();
@@ -50,6 +43,8 @@
                         if (data.value[i].prodId == planList[y].productId) {
                             $("#planText").css('display', 'block');
                             $('#planName').text(planList[y].planDescription);
+                            $('#amount').text(planList[y].amount);
+                            $('#' + data.value[i].priceId).css('text-decoration', 'underline');
                         }
                     }
                 }

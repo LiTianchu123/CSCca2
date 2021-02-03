@@ -1,0 +1,24 @@
+﻿
+#container {
+    width: 37%;
+    margin: auto;
+}
+
+#loginForm div {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+#loginForm {
+    text-align: center;
+}
+
+#submitBtn {
+    width: 100%;
+    margin: auto;
+}
+
+#password, #email {
+    width: 60%;
+}

@@ -1,0 +1,24 @@
+﻿
+#container {
+    width: 60%;
+    margin: auto;
+}
+
+#registerForm div {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+#registerForm h3 {
+    text-align: center;
+}
+
+#submitBtn {
+    width: 100%;
+    margin: auto;
+}
+
+#name, #password, #email, #confirmPassword {
+    width: 60%;
+}
