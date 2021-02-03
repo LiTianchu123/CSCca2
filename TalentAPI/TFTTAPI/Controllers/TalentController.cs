@@ -137,7 +137,7 @@ namespace TFTTAPI.Controllers
 
             try
             {
-                _rdsContext.Talents.Update(talent);
+                _rdsContext.Talents.Update(tRecord);
                 _rdsContext.SaveChanges();
             }
             catch

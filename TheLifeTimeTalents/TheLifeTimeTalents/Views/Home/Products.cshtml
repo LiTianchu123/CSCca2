@@ -36,8 +36,7 @@
                 data: { customerId: sessionStorage.getItem('customerId') },
 
             }).done(function (data) {
-                console.dir(2);
-                console.dir(planList);
+             
                 for (var i = 0; i < data.value.length; i++) {
                     for (var y = 0; y < planList.length; y++) {
                         if (data.value[i].prodId == planList[y].productId) {
