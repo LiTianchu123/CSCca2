@@ -82,3 +82,7 @@ body {
     pointer-events: none;
     cursor: default;
 }
+
+#talentBtn, #editTalentBtn, #deleteTalentBtn,#disqus_thread,#promotionContainer {
+    display: none;
+}

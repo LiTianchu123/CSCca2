@@ -67,3 +67,7 @@ h3#reco {
     margin: 1em;
     text-align: center;
 }
+
+#editTalentBtn, #deleteTalentBtn, #disqus_thread, #promotionContainer {
+    display: none;
+}
