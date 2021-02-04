@@ -152,7 +152,7 @@ namespace TFTTAPI.Controllers
             try
             {
                 var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
-                client.Send(new SetItemValues(talent.Id + "",
+                client.Send(new SetItemValues(id + "",
                             new Dictionary<string, object>() {
                                 {"name", talent.Name},
                                 {"talentImg", talent.Profile},
