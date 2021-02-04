@@ -24,3 +24,7 @@ img.img {
 input, textarea {
     width: 100%;
 }
+
+#talentBtn{
+    display: none;
+}

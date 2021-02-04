@@ -75,6 +75,8 @@
  
     <script>
         var userType = "Free";
+        var loggedIn = false;
+
         var config = {
             apiKey: "AIzaSyAscPkHv9DIK8L4aW_JdFndUCNaVk_Tguw",
             authDomain: "talent-303507.firebaseapp.com",
@@ -83,15 +85,21 @@
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+               
                 $.ajax({
                     method: "GET",
                     url:"/Stripe/GetCustomer?email="+user.email,
                 }).done(function (data) {
+                    console.dir(data)
                     for (var i = 0; i < data.value.length; i++) {
                         sessionStorage.setItem('customerId', data.value[i].id);
                         if (data.value[i].amount != 0) {
                             userType = "Paid";
+                        } else {
+                            userType = "Free";
                         }
+                        loggedIn = true;
+                        setPermission();
                         console.dir(userType);
                     }
                 }).fail(function (data) {
@@ -112,7 +120,7 @@
                     $('.loginItem').css('display', 'block');
                     $('.logoutItem').css('display', 'none');
                 }
-               
+                
                 //if (sessionStorage.getItem("loginStatus") != "loggedIn") {
                 //    sessionStorage.setItem("loginStatus", "loggedIn");
                 //}
@@ -123,10 +131,36 @@
                 //if (sessionStorage.getItem("loginStatus") != "loggedOut") {
                 //    sessionStorage.setItem("loginStatus", "loggedOut");
                 //}
+                loggedIn = false;
+                setPermission();
                 sessionStorage.setItem('customerId', "");
             }
         });
 
+        function setPermission() {
+            if (loggedIn && userType == "Paid") {
+                console.dir("Type1");
+                $("#talentBtn").css('display', 'block');
+                $("#editTalentBtn").css('display', 'inline-block');
+                $("#deleteTalentBtn").css('display', 'inline-block');
+                $("#disqus_thread").css('display', 'block');
+                $("#promotionContainer").css('display', 'none');
+            } else if (loggedIn && userType == "Free") {
+                console.dir("Type2");
+                $("#talentBtn").css('display', 'block');
+                $("#editTalentBtn").css('display', 'inline-block');
+                $("#deleteTalentBtn").css('display', 'inline-block');
+                $("#disqus_thread").css('display', 'none');
+                $("#promotionContainer").css('display', 'block');
+            } else if (!loggedIn) {
+                console.dir("Type3");
+                $("#talentBtn").css('display', 'none');
+                $("#editTalentBtn").css('display', 'none');
+                $("#deleteTalentBtn").css('display', 'none');
+                $("#disqus_thread").css('display', 'none');
+                $("#promotionContainer").css('display', 'none');
+            }
+        }
         $(document).ready(function () {
             $('#logoutBtn').on('click', function () {
                 firebase.auth().signOut().then(() => {

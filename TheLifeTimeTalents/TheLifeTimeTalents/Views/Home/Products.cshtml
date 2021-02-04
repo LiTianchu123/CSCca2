@@ -35,7 +35,7 @@
                 url: "/Stripe/GetSubscription?customerId=" + sessionStorage.getItem('customerId').toString(),
            
             }).done(function (data) {
-             
+                console.dir(data);
                 for (var i = 0; i < data.value.length; i++) {
                     for (var y = 0; y < planList.length; y++) {
                         if (data.value[i].prodId == planList[y].productId) {
