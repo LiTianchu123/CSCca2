@@ -156,7 +156,7 @@ namespace TFTTAPI.Controllers
                             new Dictionary<string, object>() {
                                 {"name", talent.Name},
                                 {"talentImg", talent.Profile},
-                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+talent.Id },
+                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+id },
                                 {"deleted", false}
                             },
                             cascadeCreate: true
