@@ -35,7 +35,7 @@
             <img src="" id="img" alt="">
         </div>
         <div id="textBox">
-            <p id="name"></p>
+            <h3 id="name"></h3>
             <p id="bio"></p>
             <p id="reknown"></p>
         </div>
@@ -104,8 +104,8 @@
 
     <div id="deleteModal" class="modal">
         <div class="deleteContainer">
-            <h1>Delete Account</h1>
-            <p id="deleteText">Are you sure you want to delete account?</p>
+            <h1>Delete Talent</h1>
+            <p id="deleteText">Are you sure you want to delete Talent?</p>
 
             <div class="clearfix">
                 <button type="button" class="cancelbtn" data-dismiss="modal">Cancel</button>
@@ -149,9 +149,9 @@
             reknown = data.reknown;
             profile = data.profile;
             imgUrl = profile;
-            $('#name').html(name);
-            $('#bio').html(bio);
-            $('#reknown').html(reknown);
+            $('#name').html("Name: "+name);
+            $('#bio').html("Bio: "+bio);
+            $('#reknown').html("Reknown: "+reknown);
             $('#img').attr("src", profile);
             console.log(data)
         }).fail(function (data) {
@@ -176,7 +176,7 @@
                 headers: {
                     "Access-Control-Allow-Headers": "Content-Type",
                     "Access-Control-Allow-Origin": "https://www.example.com",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT"
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
                 },
             }).done(function (data) {
                 $.toast({
@@ -236,10 +236,10 @@
 
         var s3BucketName = 'csc1718s1';
 
-        function predict_click(value, source) {
+        function predictClick(value, source) {
 
             if (source === "url") {
-                doPredict({ url: value });
+                doPrediction({ url: value });
 
                 // Div Stuff
                 createHiddenDivs("url", value);
@@ -252,7 +252,7 @@
                 // load local file picture
                 reader.addEventListener("load", function () {
                     var localBase64 = reader.result.split("base64,")[1];
-                    doPredict({ base64: localBase64 });
+                    doPrediction({ base64: localBase64 });
 
                 }, false);
 
@@ -265,7 +265,7 @@
         /*Purpose: Does a v2 prediction based on user input
         Args:
         value - Either {url : urlValue} or { base64 : base64Value }*/
-        function doPredict(value) {
+        function doPrediction(value) {
 
             var modelID = "TalentSearch";
 
@@ -347,12 +347,11 @@
                 if ($('#file').val() == '') {
                     editTalentDetail();
                 }
-
                 else if (!validFile($('#file').val())) {
                     alert('Supported File Types: JPEG, PNG, TIFF, BMP');
                     return;
                 } else {
-                    predict_click($('#file').val(), 'file');
+                    predictClick($('#file').val(), 'file');
                 }
             });
 
