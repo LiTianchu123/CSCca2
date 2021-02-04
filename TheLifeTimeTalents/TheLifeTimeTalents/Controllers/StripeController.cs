@@ -92,7 +92,7 @@ namespace TheLifeTimeTalents.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubscription(string customerId)
+        public IActionResult GetSubscription([FromQuery] string customerId)
         {
 
             StripeConfiguration.ApiKey = API_KEY;
@@ -130,7 +130,7 @@ namespace TheLifeTimeTalents.Controllers
 
         }
         [HttpGet]
-        public IActionResult GetCustomer(string email)
+        public IActionResult GetCustomer([FromQuery] string email)
         {
             StripeConfiguration.ApiKey = API_KEY;
             List<object> resultList = new List<object>();

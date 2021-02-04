@@ -84,7 +84,7 @@
             if (user) {
                 $.ajax({
                     method: "GET",
-                    url:"/Stripe/GetCustomer"
+                    url:"/Stripe/GetCustomer?email="+user.email,
                 }).done(function (data) {
                     for (var i = 0; i < data.value.length; i++) {
                         sessionStorage.setItem('customerId', data.value[i].id);
