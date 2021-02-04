@@ -165,6 +165,12 @@
         if (userId == "" || userId == null) {
             userId = "freeUser";
         }
+        var client = new recombee.ApiClient('tltt-dev', 'gH4f8KmjXJOOX3Pat0chfKCTC2sugedv9RFS8hHRTzZSbsstgPmzf2TkwB1OkWCX');
+        client.send(new recombee.AddDetailView(userId, id+""),
+            (err, response) => {
+                //...
+            }
+        );
         recombeeIntegration({
             "type": "SetDefaults",
             "itemId": id,
