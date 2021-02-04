@@ -32,9 +32,8 @@
         function getSubscription() {
             $.ajax({
                 method: "GET",
-                url: "/Stripe/GetSubscription",
-                data: { customerId: sessionStorage.getItem('customerId') },
-
+                url: "/Stripe/GetSubscription?customerId=" + sessionStorage.getItem('customerId').toString(),
+           
             }).done(function (data) {
              
                 for (var i = 0; i < data.value.length; i++) {
