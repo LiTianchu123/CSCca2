@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFTTAPI.Model;
+using Recombee.ApiClient;
+using Recombee.ApiClient.ApiRequests;
+using Recombee.ApiClient.Bindings;
 
 namespace TFTTAPI.Controllers
 {
@@ -29,10 +32,20 @@ namespace TFTTAPI.Controllers
             try
             {
                 talentList = _rdsContext.Talents.ToList();
-               resultList = new List<object>();
+                resultList = new List<object>();
 
                 foreach (Talent t in talentList)
                 {
+                    var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                    client.Send(new SetItemValues(t.Id+"",
+                                new Dictionary<string, object>() {
+                                {"name", t.Name},
+                                {"talentImg", t.Profile},
+                                {"deleted", false}
+                                },
+                                cascadeCreate: true
+                            ));
+
                     resultList.Add(new
                     {
                         id = t.Id,
@@ -137,6 +150,16 @@ namespace TFTTAPI.Controllers
 
             try
             {
+                var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                client.Send(new SetItemValues(talent.Id + "",
+                            new Dictionary<string, object>() {
+                                {"name", talent.Name},
+                                {"talentImg", talent.Profile},
+                                {"deleted", false}
+                            },
+                            cascadeCreate: true
+                        ));
+
                 _rdsContext.Talents.Update(tRecord);
                 _rdsContext.SaveChanges();
             }
@@ -159,6 +182,13 @@ namespace TFTTAPI.Controllers
 
             try
             {
+                var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                client.Send(new SetItemValues(id + "",
+                            new Dictionary<string, object>() {
+                                {"deleted", true}
+                            },
+                            cascadeCreate: true
+                        ));
                 _rdsContext.Remove(talent);
                 _rdsContext.SaveChanges();
             }
