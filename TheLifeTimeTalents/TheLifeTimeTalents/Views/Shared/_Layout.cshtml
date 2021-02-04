@@ -90,6 +90,7 @@
                     method: "GET",
                     url:"/Stripe/GetCustomer?email="+user.email,
                 }).done(function (data) {
+                    console.dir(data)
                     for (var i = 0; i < data.value.length; i++) {
                         sessionStorage.setItem('customerId', data.value[i].id);
                         if (data.value[i].amount != 0) {
