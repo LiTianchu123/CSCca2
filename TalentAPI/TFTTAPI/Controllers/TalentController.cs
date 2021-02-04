@@ -41,7 +41,7 @@ namespace TFTTAPI.Controllers
                                 new Dictionary<string, object>() {
                                 {"name", t.Name},
                                 {"talentImg", t.Profile},
-                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail/"+t.Id },
+                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+t.Id },
                                 {"deleted", false}
                                 },
                                 cascadeCreate: true
@@ -156,7 +156,7 @@ namespace TFTTAPI.Controllers
                             new Dictionary<string, object>() {
                                 {"name", talent.Name},
                                 {"talentImg", talent.Profile},
-                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail/"+talent.Id },
+                                {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+talent.Id },
                                 {"deleted", false}
                             },
                             cascadeCreate: true

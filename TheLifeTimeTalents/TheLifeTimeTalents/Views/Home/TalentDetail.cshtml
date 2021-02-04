@@ -42,6 +42,10 @@
         <button class="btn-outline-primary" id="editTalentBtn">Edit talent</button>
         <button class="btn-outline-danger" id="deleteTalentBtn">Delete talent</button>
     </div>
+    <script>window.recombeeIntegration = window.recombeeIntegration || function () { (recombeeIntegration.q = recombeeIntegration.q || []).push(arguments) }; recombeeIntegration.l = +new Date;</script>
+    <script defer src="https://web-integration.recombee.com/v1/recombee.js"></script>
+    <h3 id="reco">Recommendation</h3>
+    <div id="widget-root-b6e1f2d0-f56d-456d-a393-2fb43f5ed93c"></div>
     <div id="disqus_thread"></div>
     <script>
         /**
@@ -85,7 +89,7 @@
                         <label for="editBio">Bio:</label>
                         <textarea id="editBio" name="editBio" rows="4" cols="50" required></textarea>
 
-                        <input type="file" name="file" id="file" value="dataFile" >
+                        <input type="file" name="file" id="file" value="dataFile">
                         <br />
                         <div class="modal-footer">
                             <!-- <input type="submit" name="submit" class="btn btn-block btn-warning" value="Save changes" /> -->
@@ -101,7 +105,6 @@
 
         </div>
     </div>
-
     <div id="deleteModal" class="modal">
         <div class="deleteContainer">
             <h1>Delete Talent</h1>
@@ -156,6 +159,27 @@
             console.log(data)
         }).fail(function (data) {
             console.log('fail')
+        });
+
+        var userId = sessionStorage.getItem('customerId');
+        if (userId == "" || userId == null) {
+            userId = "freeUser";
+        }
+        recombeeIntegration({
+            "type": "SetDefaults",
+            "itemId": id,
+            "userId": userId,
+            "publicToken": "gH4f8KmjXJOOX3Pat0chfKCTC2sugedv9RFS8hHRTzZSbsstgPmzf2TkwB1OkWCX",
+            "databaseId": "tltt-dev",
+            "rapiHostname": "client-rapi.recombee.com:443"
+        });
+        recombeeIntegration({
+            "type": "AddDetailView"
+        });
+        recombeeIntegration({
+            "type": "InitializeRecommendationWidget",
+            "rootElementId": "widget-root-b6e1f2d0-f56d-456d-a393-2fb43f5ed93c",
+            "widgetId": "b6e1f2d0-f56d-456d-a393-2fb43f5ed93c"
         });
 
         function editTalentDetail() {
