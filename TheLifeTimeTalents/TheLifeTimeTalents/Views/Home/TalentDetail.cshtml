@@ -2,10 +2,10 @@
 <script>
     try {
         AWS.config.update({
-            accessKeyId: 'ASIA6CJKPEFDBGS4A5TT',
-            secretAccessKey: 'UbGIFIf4hmjqhN5AGJrc7A097mRCT/LHsbpKcRBI',
-            sessionToken: 'FwoGZXIvYXdzEBYaDIRJ046jAnRepu79wCLKAakLk/cE9huoZV8x2CUS+LtqJHlBvab0mUUKkrhHjUDnPxRkarGnvEMLLMHDJi3WOeWaJ80GDtwX2jRvbONGAQSdZC4BkCSUPvEfbXsyljmDUfG0GuEDdhNHVrQFeLPQWKkNTu6Yzzrken9Aslu7hXtyXpQ9mVw5Qqz1DzBCK9ZB6iD4JgLwsm/0RyB6icjN/K0srGgPBCP1vUup7a13rnuy/+v0Ra0t9pu6EBiOGCUS61PP+xO+k4+FCUt8clzJeor2ORkj2qI0iCoowL3qgAYyLZXZQNeuvnQI+S8J/khz1vZFCdqrN4H/HITFYyNwL2yVu/+iCiXC2aPGvIKokA=='
-        });
+        accessKeyId: 'ASIA6CJKPEFDI54WBGTV',
+        secretAccessKey: 'g5wnaonS7Ve98NpjRWhQ0sNsPIWRt9R6BdAxNQZW',
+        sessionToken: 'FwoGZXIvYXdzEDIaDCqn1FdA9WqjYMxvgSLKAcpp7GZ70pB8b5fZtOE2QBdBML/NJFsXKdwzGmb5y6DHwsiNGrCiiDFh++p8crgdP3h2l7FM6RBy8JMri8mpnAy6Y0ajBo9gaZ3JIQZKH/gZCrLNdowLDqjIdaZWuYsg/zYVNRxgUpLZnAGWYdIS5cjO+VYqhcuOdcVy2Dfbc/I/p6fN3n7E/s9MIA/D2KJjkeWC4E30VKCuVQBZmcDS1Zq9jPCBnc5oWoStQrx1nDQA4L/dqdAoF4af4BW/bvdPcBZY9F0Xr/0ZMrAoqM/wgAYyLa2eHx6WrMlN+jXkqRvQTf0mEaekukt3cYO8cewBg7HKu3DSdiPmlPjzY8JbDg=='
+        });;
     }catch (err) {
         alert("Need a valid aws API Key!");
         throw "Invalid API Key";
@@ -265,7 +265,7 @@
             });
         }
 
-        var s3BucketName = 'csc1718s1';
+        var s3BucketName = 'csc2021';
 
         function predictClick(value, source) {
 
@@ -322,7 +322,7 @@
                                 window.alert("Not A TALENT")
                             } else {
                                 var s3 = new AWS.S3({
-                                    params: { Bucket: 'csc1718s1' }
+                                    params: { Bucket: 'csc2021' }
                                 });
                                 var file = document.getElementById('file').files[0];
                                 if (file) {
@@ -334,7 +334,7 @@
                                     },
                                         function (err, data) {
                                             if (data !== null) {
-                                                imgUrl = "https://csc1718s1.s3.amazonaws.com/" + file.name;
+                                                imgUrl = "https://csc2021.s3.amazonaws.com/" + file.name;
                                                 editTalentDetail();
                                             }
                                             else {

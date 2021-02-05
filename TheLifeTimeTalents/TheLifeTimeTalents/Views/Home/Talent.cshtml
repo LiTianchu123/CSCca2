@@ -1,10 +1,15 @@
 ﻿<link rel="stylesheet" href="~/css/talent.css">
 <script>
-    AWS.config.update({
-        accessKeyId: 'ASIA6CJKPEFDMO73XXMO',
-        secretAccessKey: 'B/bAtyRg4Jpk+2NAB8RlmGBfk36I1ugKeFPLDSkI',
-        sessionToken: 'FwoGZXIvYXdzEBQaDFlGzO4UEMQ01dtORCLKAbuHCazsrYX3e66858nYv/XG2SABTGyIcGT7y5UoLX/2eInBF1SFfsXkgoOkfyw2MG3GXdW9hi0WBuJiy7EuQe11a6YT/F/7peeu0oZZnKtttBRQ1XcolTvOzIuXlZO5jxRbLc6C5qkZrnOHpCmXV/54JZIYRjGWjxa3jGdaRvWJckpSW0UwFo38Z8UVM8f/KBbb8D0TBN0z7uiH2CP155zk263oWDMh7x14u6nvLS8+LdAzus5jBhC0P1AkHzM3L3zD+GJi2XawJRMo7oXqgAYyLTiCEvHS5zE4lSL5ngTh6UqlpXzwXEmL4QrEgJrlk2kNGYV7nvkmzJXYBhlK8A=='
-    });
+    try {
+        AWS.config.update({
+        accessKeyId: 'ASIA6CJKPEFDI54WBGTV',
+        secretAccessKey: 'g5wnaonS7Ve98NpjRWhQ0sNsPIWRt9R6BdAxNQZW',
+        sessionToken: 'FwoGZXIvYXdzEDIaDCqn1FdA9WqjYMxvgSLKAcpp7GZ70pB8b5fZtOE2QBdBML/NJFsXKdwzGmb5y6DHwsiNGrCiiDFh++p8crgdP3h2l7FM6RBy8JMri8mpnAy6Y0ajBo9gaZ3JIQZKH/gZCrLNdowLDqjIdaZWuYsg/zYVNRxgUpLZnAGWYdIS5cjO+VYqhcuOdcVy2Dfbc/I/p6fN3n7E/s9MIA/D2KJjkeWC4E30VKCuVQBZmcDS1Zq9jPCBnc5oWoStQrx1nDQA4L/dqdAoF4af4BW/bvdPcBZY9F0Xr/0ZMrAoqM/wgAYyLa2eHx6WrMlN+jXkqRvQTf0mEaekukt3cYO8cewBg7HKu3DSdiPmlPjzY8JbDg=='
+        });;
+    }catch (err) {
+        alert("Need a valid aws API Key!");
+        throw "Invalid API Key";
+    }
     AWS.config.region = 'us-east-1';
 
     try {
@@ -113,7 +118,7 @@
            
         });
 
-        var s3BucketName = 'csc1718s1';
+        var s3BucketName = 'csc2021';
 
         function predict_click(value, source) {
 
@@ -180,7 +185,7 @@
                                 });
                             } else {
                                 var s3 = new AWS.S3({
-                                    params: { Bucket: 'csc1718s1' }
+                                    params: { Bucket: 'csc2021' }
                                 });
                                 var file = document.getElementById('file').files[0];
                                 if (file) {
@@ -195,7 +200,7 @@
                                                 var talent = {
                                                     Name: $("input[name='addName']").val(),
                                                     ShortName:$("input[name='addShortName']").val(),
-                                                    Profile: "https://csc1718s1.s3.amazonaws.com/" + file.name,
+                                                    Profile: "https://csc2021.s3.amazonaws.com/" + file.name,
                                                     Bio: $("textarea#addBio").val(),
                                                     Reknown: $("input[name='addReknown']").val()
                                                 }

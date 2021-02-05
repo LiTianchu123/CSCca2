@@ -42,7 +42,8 @@ namespace TFTTAPI.Controllers
                                 {"name", t.Name},
                                 {"talentImg", t.Profile},
                                 {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+t.Id },
-                                {"deleted", false}
+                                {"deleted", false},
+                                {"available", true}
                                 },
                                 cascadeCreate: true
                             ));
@@ -157,7 +158,8 @@ namespace TFTTAPI.Controllers
                                 {"name", talent.Name},
                                 {"talentImg", talent.Profile},
                                 {"link", "http://thelifetimetalents-dev.us-east-1.elasticbeanstalk.com/Home/TalentDetail?id="+id },
-                                {"deleted", false}
+                                {"deleted", false},
+                                {"available", true}
                             },
                             cascadeCreate: true
                         ));
@@ -187,7 +189,9 @@ namespace TFTTAPI.Controllers
                 var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
                 client.Send(new SetItemValues(id + "",
                             new Dictionary<string, object>() {
-                                {"deleted", true}
+                                {"deleted", true},
+                                {"available", false}
+
                             },
                             cascadeCreate: true
                         ));
