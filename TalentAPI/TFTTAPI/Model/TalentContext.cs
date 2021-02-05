@@ -24,7 +24,7 @@ namespace TFTTAPI.Model
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseMySql("server=talent.cwbyhwo1ifxy.us-east-1.rds.amazonaws.com;database=talent;uid=admin;pwd=admin123", x => x.ServerVersion("8.0.20-mysql"));
+                optionsBuilder.UseMySql("mysqlconnectionstring", x => x.ServerVersion("8.0.20-mysql"));
             }
         }
 
