@@ -36,7 +36,7 @@ namespace TFTTAPI.Controllers
 
                 foreach (Talent t in talentList)
                 {
-                    var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                    var client = new RecombeeClient("tltt-dev", "apikey");
                     client.Send(new SetItemValues(t.Id+"",
                                 new Dictionary<string, object>() {
                                 {"name", t.Name},
@@ -152,7 +152,7 @@ namespace TFTTAPI.Controllers
 
             try
             {
-                var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                var client = new RecombeeClient("tltt-dev", "apikey");
                 client.Send(new SetItemValues(id + "",
                             new Dictionary<string, object>() {
                                 {"name", talent.Name},
@@ -186,7 +186,7 @@ namespace TFTTAPI.Controllers
 
             try
             {
-                var client = new RecombeeClient("tltt-dev", "74NU7KLeUUpTMFtFTpPUhQGEduqdpRoTFMR1548aUtLzDdWdACb6OnIzrVTYzjAC");
+                var client = new RecombeeClient("tltt-dev", "apikey");
                 client.Send(new SetItemValues(id + "",
                             new Dictionary<string, object>() {
                                 {"deleted", true},

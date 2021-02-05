@@ -13,7 +13,7 @@ namespace TheLifeTimeTalents.Controllers
 {
     public class StripeController : Controller
     {
-        private readonly string API_KEY = "sk_test_51I2fLjHVInnZqCxx5mfcY7lp7tH89t76L6SUNcISWHiC94j65SejSjybi0FDcROhbxnGkgnatlpcrPEGBwfUoDgQ00DYHAjbZ2";
+        private readonly string API_KEY = "stripeapikey";
         public IActionResult Index()
         {
             return View();
